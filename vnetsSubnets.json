@@ -1,0 +1,126 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "prod-e-vnwLocation": {
+            "type": "string",
+            "defaultValue": "East US",
+            "allowedValues": [
+                "East US",
+                "West US",
+                "West Europe",
+                "East Asia",
+                "South East Asia"
+            ]
+        }
+        
+    },
+    "variables": {
+        "prod-e-vnw_Prefix": "172.24.130.0/24",
+        "subnets": {
+            "wafSubnet": {
+                "subnetName": "prd-e-vsn-waf",
+                "subnetPrefix": "172.24.130.8/29"
+            },
+            "cwebSubnet": {
+                "subnetName": "prd-e-vsn-cweb",
+                "subnetPrefix": "172.24.130.32/27"
+            },
+            "swebSubnet": {
+                "subnetName": "prd-e-vsn-sweb",
+                "subnetPrefix": "172.24.130.64/27"
+            },
+            "cappSubnet": {
+                "subnetName": "prd-e-vsn-capp",
+                "subnetPrefix": "172.24.130.96/27"
+            },
+            "sappSubnet": {
+                "subnetName": "prd-e-vsn-sapp",
+                "subnetPrefix": "172.24.130.128/27"
+            },
+            "dbSubnet": {
+                "subnetName": "prd-e-vsn-db",
+                "subnetPrefix": "172.24.130.16/28"
+            },
+            "adSubnet": {
+                "subnetName": "prd-e-vsn-ad",
+                "subnetPrefix": "172.24.130.0/29"
+            },
+            "gatewaySubnet": {
+                "subnetName": "GatewaySubnet",
+                "subnetPrefix": "172.24.130.160/28"
+            }
+        }
+    },
+    "resources": [
+        {
+            "name": "prod-e-vnw",
+            "type": "Microsoft.Network/virtualNetworks",
+            "location": "[parameters('prod-e-vnwLocation')]",
+            "apiVersion": "2015-05-01-preview",
+            "dependsOn": [ ],
+            "tags": {
+                "displayName": "prod-e-vnw"
+            },
+            "properties": {
+                "addressSpace": {
+                    "addressPrefixes": [
+                        "[variables('prod-e-vnw_Prefix')]"
+                    ]
+                },
+                "subnets": [
+                    {
+                        "name": "[variables('subnets').wafSubnet.subnetName]",
+                        "properties": {
+                            "addressPrefix": "[variables('subnets').wafSubnet.subnetPrefix]"
+                        }
+                    },
+                    {
+                        "name": "[variables('subnets').cwebSubnet.subnetName]",
+                        "properties": {
+                            "addressPrefix": "[variables('subnets').cwebSubnet.subnetPrefix]"
+                        }
+                    },
+                    {
+                        "name": "[variables('subnets').swebSubnet.subnetName]",
+                        "properties": {
+                            "addressPrefix": "[variables('subnets').swebSubnet.subnetPrefix]"
+                        }
+                    },
+                    {
+                        "name": "[variables('subnets').cappSubnet.subnetName]",
+                        "properties": {
+                            "addressPrefix": "[variables('subnets').cappSubnet.subnetPrefix]"
+                        }
+                    },
+                    {
+                        "name": "[variables('subnets').sappSubnet.subnetName]",
+                        "properties": {
+                            "addressPrefix": "[variables('subnets').sappSubnet.subnetPrefix]"
+                        }
+                    },
+                    {
+                        "name": "[variables('subnets').dbSubnet.subnetName]",
+                        "properties": {
+                            "addressPrefix": "[variables('subnets').dbSubnet.subnetPrefix]"
+                        }
+                    },
+                    {
+                        "name": "[variables('subnets').adSubnet.subnetName]",
+                        "properties": {
+                            "addressPrefix": "[variables('subnets').adSubnet.subnetPrefix]"
+                        }
+                    },
+                    {
+                        "name": "[variables('subnets').gatewaySubnet.subnetName]",
+                        "properties": {
+                            "addressPrefix": "[variables('subnets').gatewaySubnet.subnetPrefix]"
+                        }
+                    }
+                ]
+            }
+        }
+    ],
+    "outputs": {
+    }
+}
